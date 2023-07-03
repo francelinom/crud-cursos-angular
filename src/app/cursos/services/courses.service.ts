@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Curso } from '../model/curso';
-import { Observable, first, tap } from 'rxjs';
+import { Observable, delay, first, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
