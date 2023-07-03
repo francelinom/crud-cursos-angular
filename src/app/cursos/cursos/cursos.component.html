@@ -4,7 +4,7 @@
     Cursos Disponíveis
   </mat-toolbar>
 
-  <div *ngIf="cursos.length; else loading">
+  <div *ngIf="cursos$ | async as cursos; else loading">
     <table mat-table [dataSource]="cursos" class="mat-elevation-z8">
 
       <!-- Name Column -->
