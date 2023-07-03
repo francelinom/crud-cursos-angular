@@ -2,11 +2,11 @@
   {
     "_id": "1",
     "name": "Angular",
-    "category": "Front-end"
+    "category": "front-end"
   },
   {
     "_id": "2",
-    "name": "Angular 16",
-    "category": "Front-end 2"
+    "name": "Spring boot",
+    "category": "back-end"
   }
 ]
