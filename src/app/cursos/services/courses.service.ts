@@ -19,4 +19,8 @@ export class CoursesService {
         first()
       );
   }
+
+  save(curso: Curso) {
+    return this.httpClient.post<Curso>(this.API, curso).pipe(first());
+  }
 }
