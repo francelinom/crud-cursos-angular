@@ -8,7 +8,8 @@
     <app-cursos-list
       *ngIf="cursos$ | async as cursos; else loading"
       [cursos]="cursos"
-      (add)="onAdd()">
+      (add)="onAdd()"
+      (edit)="onEdit($event)">
 
     </app-cursos-list>
 

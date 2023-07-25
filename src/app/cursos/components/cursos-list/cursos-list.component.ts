@@ -11,6 +11,7 @@ export class CursosListComponent implements OnInit {
 
   @Input() cursos: Curso[] = [];
   @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
 
   readonly displayedColumns = ['name', 'category', 'actions'];
 
@@ -20,5 +21,9 @@ export class CursosListComponent implements OnInit {
 
   onAdd() {
     this.add.emit(true);
+  }
+
+  onEdit(curso: Curso) {
+    this.edit.emit(curso);
   }
 }
