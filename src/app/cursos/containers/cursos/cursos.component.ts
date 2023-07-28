@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 
 import { Curso } from '../../model/curso';
 import { CoursesService } from '../../services/courses.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cursos',
@@ -14,14 +15,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CursosComponent implements OnInit {
 
-  cursos$: Observable<Curso[]>;
+  cursos$: Observable<Curso[]> | null = null;
 
   constructor(
     private cursosService: CoursesService,
     private router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
+    this.refresh();
+  }
+
+  refresh() {
     this.cursos$ = this.cursosService.listCursos()
       .pipe(
         catchError(error => {
@@ -40,11 +46,22 @@ export class CursosComponent implements OnInit {
   ngOnInit(): void { }
 
   onAdd() {
-    this.router.navigate(['novo'], {relativeTo: this.route});
+    this.router.navigate(['novo'], { relativeTo: this.route });
   }
 
   onEdit(curso: Curso) {
-    this.router.navigate(['edit', curso._id], {relativeTo: this.route});
+    this.router.navigate(['edit', curso._id], { relativeTo: this.route });
+  }
+
+  onRemove(curso: Curso) {
+    this.cursosService.delete(curso._id).subscribe(() => {
+      this.refresh();
+      this.snackBar.open('Curso removido com sucesso!', 'X', {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
+    }, error => this.onError('Erro ao tentar remover curso!'));
   }
 
 }
