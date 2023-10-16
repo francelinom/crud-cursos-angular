@@ -30,7 +30,8 @@ export class CursoFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       _id: [curso._id],
       name: [curso.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      category: [curso.category, [Validators.required]]
+      category: [curso.category, [Validators.required]],
+      lessons: this.formBuilder.array(this.retrievelLesson(curso))
     });
   }
 
