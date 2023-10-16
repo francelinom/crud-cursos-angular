@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CoursesService } from '../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
 import { Curso } from '../../model/curso';
+import { Lesson } from '../../model/lesson';
 
 @Component({
   selector: 'app-curso-form',
@@ -14,11 +15,7 @@ import { Curso } from '../../model/curso';
 })
 export class CursoFormComponent implements OnInit {
 
-  form = this.formBuilder.group({
-    _id: [''],
-    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-    category: ['', [Validators.required]]
-  });
+  form!: FormGroup;
 
   constructor(private formBuilder: NonNullableFormBuilder,
     private cursoService: CoursesService,
@@ -30,10 +27,30 @@ export class CursoFormComponent implements OnInit {
 
   ngOnInit(): void {
     const curso: Curso = this.route.snapshot.data['curso'];
-    this.form.setValue({
-      _id: curso._id,
-      name: curso.name,
-      category: curso.category
+    this.form = this.formBuilder.group({
+      _id: [curso._id],
+      name: [curso.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      category: [curso.category, [Validators.required]]
+    });
+  }
+
+  private retrievelLesson(curso: Curso) {
+    const lessons = [];
+    if (curso.lessons) {
+      curso.lessons.forEach(lesson => {
+        lessons.push(this.createLesson(lesson));
+      })
+    } else {
+      lessons.push(this.createLesson());
+    }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = { id: '', name: '', youtubeUrl: '' }) {
+    return this.formBuilder.group({
+      id: [lesson.id],
+      name: [lesson.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      youtubeUrl: [lesson.youtubeUrl, [Validators.required]]
     });
   }
 
