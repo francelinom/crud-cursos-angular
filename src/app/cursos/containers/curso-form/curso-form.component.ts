@@ -31,7 +31,7 @@ export class CursoFormComponent implements OnInit {
       _id: [curso._id],
       name: [curso.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       category: [curso.category, [Validators.required]],
-      lessons: this.formBuilder.array(this.retrievelLesson(curso))
+      lessons: this.formBuilder.array(this.retrievelLesson(curso), [Validators.required])
     });
   }
 
@@ -51,7 +51,7 @@ export class CursoFormComponent implements OnInit {
     return this.formBuilder.group({
       id: [lesson.id],
       name: [lesson.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      youtubeUrl: [lesson.youtubeUrl, [Validators.required]]
+      youtubeUrl: [lesson.youtubeUrl, [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
     });
   }
 
@@ -70,10 +70,15 @@ export class CursoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.cursoService.save(this.form.value).subscribe(data => {
-      this.onSuccess();
-      this.location.back();
-    }, error => this.onError());
+    if (this.form.valid) {
+      this.cursoService.save(this.form.value).subscribe(data => {
+        this.onSuccess();
+        this.location.back();
+      }, error => this.onError());
+    } else {
+      this.form.markAllAsTouched();
+    }
+
   }
 
   onCancel() {
@@ -106,6 +111,11 @@ export class CursoFormComponent implements OnInit {
     }
 
     return 'Campo Inválido';
+  }
+
+  isFormArrayRequired(): boolean {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    return !lessons.valid && lessons.hasError('required') && lessons.touched;
   }
 
 }
