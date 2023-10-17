@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CoursesService } from '../../services/courses.service';
@@ -53,6 +53,10 @@ export class CursoFormComponent implements OnInit {
       name: [lesson.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       youtubeUrl: [lesson.youtubeUrl, [Validators.required]]
     });
+  }
+
+  getLessonsFormArray() {
+    return (<UntypedFormArray>this.form.get('lessons')).controls;
   }
 
   onSubmit() {
