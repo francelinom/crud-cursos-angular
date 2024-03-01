@@ -7,6 +7,7 @@ import { CoursesService } from '../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
 import { Curso } from '../../model/curso';
 import { Lesson } from '../../model/lesson';
+import { FormUtilsService } from 'src/app/shared/form/form-utils.service';
 
 @Component({
   selector: 'app-curso-form',
@@ -21,7 +22,8 @@ export class CursoFormComponent implements OnInit {
     private cursoService: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public formUtils: FormUtilsService) {
 
   }
 
@@ -71,12 +73,9 @@ export class CursoFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.cursoService.save(this.form.value).subscribe(data => {
-        this.onSuccess();
-        this.location.back();
-      }, error => this.onError());
+      this.cursoService.save(this.form.value).subscribe(result => this.onSuccess(), error => this.onError());
     } else {
-      this.form.markAllAsTouched();
+      this.formUtils.validateAllFormFields(this.form);
     }
 
   }
@@ -91,31 +90,6 @@ export class CursoFormComponent implements OnInit {
 
   private onError() {
     this.snackBar.open('Erro ao Salvar Curso', '', { duration: 5000 });
-  }
-
-  getErrorMessage(fieldName: string) {
-    const field = this.form.get(fieldName);
-
-    if (field?.hasError('required')) {
-      return 'Campo obrigatório!';
-    }
-
-    if (field?.hasError('minlength')) {
-      const requiredLength = field.errors ? field.errors['minlength']['requiredLength'] : 5;
-      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres`;
-    }
-
-    if (field?.hasError('maxlength')) {
-      const requiredLength = field.errors ? field.errors['maxlength']['requiredLength'] : 5;
-      return `Tamanho máximo excedido de ${requiredLength} caracteres`;
-    }
-
-    return 'Campo Inválido';
-  }
-
-  isFormArrayRequired(): boolean {
-    const lessons = this.form.get('lessons') as UntypedFormArray;
-    return !lessons.valid && lessons.hasError('required') && lessons.touched;
   }
 
 }
