@@ -8,6 +8,7 @@ import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/err
 import { Curso } from '../../model/curso';
 import { CoursesService } from '../../services/courses.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { CursosPage } from '../../model/curso-page';
 
 @Component({
   selector: 'app-cursos',
@@ -16,7 +17,7 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmat
 })
 export class CursosComponent implements OnInit {
 
-  cursos$: Observable<Curso[]> | null = null;
+  cursos$: Observable<CursosPage> | null = null;
 
   constructor(
     private cursosService: CoursesService,
@@ -33,7 +34,7 @@ export class CursosComponent implements OnInit {
       .pipe(
         catchError(error => {
           this.onError('Erro ao carregar cursos.');
-          return of([]);
+          return of({cursos: [], totalElements: 0, totalPages: 0});
         })
       );
   }

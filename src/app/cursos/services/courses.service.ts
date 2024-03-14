@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Curso } from '../model/curso';
 import { Observable, delay, first, tap } from 'rxjs';
+import { CursosPage } from '../model/curso-page';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class CoursesService {
   constructor(private httpClient: HttpClient) { }
 
   listCursos() {
-    return this.httpClient.get<Curso[]>(this.API)
+    return this.httpClient.get<CursosPage>(`${this.API}`)
       .pipe(
         first()
       );
