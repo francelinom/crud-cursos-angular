@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatToolbar } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,7 +7,7 @@ import { RouterOutlet } from '@angular/router';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     standalone: true,
-    imports: [RouterOutlet]
+    imports: [RouterOutlet, MatToolbar]
 })
 export class AppComponent {
   title = 'crud-curso-angular';
