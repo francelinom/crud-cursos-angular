@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Curso } from '../../model/curso';
+import { CategoriaPipe } from '../../../shared/pipe/categoria.pipe';
+import { MatMiniFabButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 @Component({
-  selector: 'app-cursos-list',
-  templateUrl: './cursos-list.component.html',
-  styleUrls: ['./cursos-list.component.scss']
+    selector: 'app-cursos-list',
+    templateUrl: './cursos-list.component.html',
+    styleUrls: ['./cursos-list.component.scss'],
+    standalone: true,
+    imports: [MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIcon, MatMiniFabButton, MatIconButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, CategoriaPipe]
 })
 export class CursosListComponent implements OnInit {
 
